@@ -43,6 +43,7 @@ SCREENSHOT SETUP
 - [Build from Source](#build-from-source)
 - [Release Validation](#release-validation)
 - [Troubleshooting](#troubleshooting)
+- [FAQ](#faq)
 - [Privacy](#privacy)
 - [Contributing](#contributing)
 - [License and Credits](#license-and-credits)
@@ -87,7 +88,7 @@ The desktop app sends five brightness values, one for each Glyph zone. The Andro
 | Computer | 64-bit Windows 10 or Windows 11 |
 | Phone | Nothing Phone (1), device codename `spacewar` |
 | Android | Android 12 or newer |
-| ROM support | Evolution X with the `com.nothing.thirdparty` Glyph adapter |
+| ROM support | Evolution X |
 | Connection | USB data cable with USB debugging enabled and authorized |
 
 > [!IMPORTANT]
@@ -150,7 +151,7 @@ Open the **Pattern** tab to build a sequence:
 GlyphLink/
 ├── android/                 Android companion written in Kotlin
 ├── installer/               Guided installer, validation, and NSIS scripts
-├── pc/                       Windows desktop application and Glyph assets
+├── pc/                      Windows desktop application and Glyph assets
 ├── release/                 Release notes, hashes, and validation report
 ├── scripts/                 Android and installer build scripts
 ├── tests/                   Installer, controller, and interface tests
@@ -217,6 +218,64 @@ The installed companion was signed with a different key. Setup leaves the existi
 <summary><strong>The app does not react to music</strong></summary>
 
 Open the Music tab, confirm that music processing is enabled, and make sure Windows has an active default output device. Switching to Manual or Pattern pauses music frames automatically.
+
+</details>
+
+## FAQ
+
+<details>
+<summary><strong>Does this work on macOS or Linux?</strong></summary>
+
+Not tested. The desktop app is built and validated for Windows 10 and 11 only.
+
+</details>
+
+<details>
+<summary><strong>Will macOS or Linux support ever be added?</strong></summary>
+
+No.
+
+</details>
+
+<details>
+<summary><strong>Does this work on any phone other than the Nothing Phone (1)?</strong></summary>
+
+No. GlyphLink targets the Nothing Phone (1) (`spacewar`) exclusively.
+
+</details>
+
+<details>
+<summary><strong>Will support for Phone (2), Phone (2a) or other Nothing devices be added?</strong></summary>
+
+No. I do not own those devices, so there is no way for me to test whether anything works on them. Untested Glyph support is worse than no Glyph support.
+
+</details>
+
+<details>
+<summary><strong>How do I know the installer is safe?</strong></summary>
+
+GlyphLink is open source. Every script that runs during installation is published in this repository, and the installer scripts inside the EXE are byte-for-byte identical to the ones here. Read them before you run anything — that is the point of shipping the source.
+
+</details>
+
+<details>
+<summary><strong>Then why does Windows warn me about the file?</strong></summary>
+
+The EXE is not Authenticode-signed, so SmartScreen flags it as coming from an unknown publisher. That warning is about the absence of a paid code-signing certificate, not about the contents of the file.
+
+</details>
+
+<details>
+<summary><strong>Does it need Wi-Fi, an account or an internet connection?</strong></summary>
+
+No. Everything runs over a local USB/ADB connection. See [Privacy](#privacy).
+
+</details>
+
+<details>
+<summary><strong>Can I leave the phone unplugged and use it wirelessly?</strong></summary>
+
+No. The Glyph frames travel through the USB cable. If the cable disconnects, the Android watchdog clears the Glyphs automatically.
 
 </details>
 
