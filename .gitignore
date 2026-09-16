@@ -1,0 +1,17 @@
+# Never commit APK signing secrets.
+signing/
+**/build/
+**/.gradle/
+**/__pycache__/
+installer/payload/
+release/*.exe
+release/*.zip
+android/local.properties
+
+*.pyc
+*.p12
+*.jks
+*.keystore
+*.apk
+.env
+.venv/

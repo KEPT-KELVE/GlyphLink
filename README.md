@@ -1,145 +1,63 @@
-<div align="center">
-GlyphLink
-Turn your Nothing Phone (1) Glyph Interface into a live Windows lighting system.
-Control every Glyph zone manually, create timed light patterns, or make the phone react to music playing on your PC — all through a local USB connection.
-![Release](https://img.shields.io/badge/release-v1.3.6-8ab4ff?style=for-the-badge)
-![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&logo=windows11&logoColor=white)
-![Android](https://img.shields.io/badge/Android-12%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-white?style=for-the-badge)
-Download · Installation · Features · Build from source
-</div>
-<!--
-SCREENSHOT SETUP
-1. Add your home-screen screenshot at docs/images/glyphlink-home.png
-2. Remove the opening and closing comment lines around the block below.
+# GlyphLink Setup 1.3.6
 
-<p align="center">
-  <img src="docs/images/glyphlink-home.png" alt="GlyphLink home screen showing the Windows connection dashboard" width="900">
-</p>
-What is GlyphLink?
-GlyphLink connects a Windows PC to the Glyph Interface on a Nothing Phone (1). The Windows app analyzes audio, controls individual light zones and plays custom patterns. A lightweight Android companion receives those commands over USB and sends them to the phone's Glyph service.
-The connection runs locally through USB debugging and ADB. Glyph control and audio analysis do not require a cloud service, account or Wi-Fi connection.
-Features
-Feature	What it does
-Music visualizer	Captures the audio playing on Windows and maps kicks, snares and hi-hats across the phone's Glyph zones. Choose Balanced or Aggressive drum detection.
-Manual control	Toggle the camera ring, top slash, center C, bottom line and bottom dot independently, or switch every zone on or off together.
-Pattern editor	Build light sequences on a visual timeline. Select the active Glyphs, set how long they stay on, add a delay after each beat and rearrange the result.
-Pattern playback	Play a sequence once, loop it continuously, stop it instantly or record individual Glyph taps as new beats.
-Pattern library	Create, rename and autosave up to 15 patterns in the user's AppData folder. Existing patterns remain after an app update.
-Live device status	Shows USB state, ADB device, phone battery level and charging status from the Windows dashboard.
-Background operation	The Android companion starts with the phone and stays ready. The Windows app can start with Windows and remain available from the system tray.
-Disconnect protection	If the PC stops sending frames or the cable disconnects, the Android watchdog clears the Glyphs automatically.
-How it works
-```mermaid
-flowchart LR
-    A[Windows audio and controls] --> B[GlyphLink desktop app]
-    B -->|Local ADB USB tunnel| C[Android companion]
-    C --> D[Evolution X Glyph adapter]
-    D --> E[Nothing Phone 1 Glyph LEDs]
-```
-The desktop app sends five brightness values, one for each Glyph zone. The Android companion listens only on the phone's local loopback interface, and ADB forwards that local connection through the USB cable. A heartbeat confirms that both sides are still responding.
-Requirements
-Component	Requirement
-Computer	64-bit Windows 10 or Windows 11
-Phone	Nothing Phone (1), device codename `spacewar`
-Android	Android 12 or newer
-ROM support	Evolution X with the `com.nothing.thirdparty` Glyph adapter
-Connection	USB data cable with USB debugging enabled and authorized
-> [!IMPORTANT]
-> The current Android companion is built for the Evolution X Glyph adapter. Stock Nothing OS and ROMs without `com.nothing.thirdparty` are not supported by this release.
-Installation
-The complete installer includes the Windows app, Android companion APK, bundled Python runtime and Windows ADB tools. You do not need to install Python, download an APK or choose a build folder.
-Download GlyphLinkSetup-1.3.6.exe from the latest release.
-Open the installer.
-On the phone, enable Developer options:
-`Settings → About phone → Software info → Build number`, then tap Build number seven times.
-Open `Settings → System → Developer options` and enable USB debugging.
-Connect the Nothing Phone (1) with a USB data cable, unlock it and tap Allow on the USB debugging prompt.
-Wait for every phone check to pass, then select Install GlyphLink.
-Keep the phone connected until the Android companion replies and the Windows app opens.
-The installer verifies the bundled files before installing anything. It checks the connected device, Android version, Glyph adapter and USB response again immediately before installation.
-Using GlyphLink
-Music
-Open the Music tab and choose a detection style:
-Balanced Drums uses stronger thresholds for cleaner, less frequent effects.
-Aggressive Drums responds more easily and produces a more active light show.
-GlyphLink analyzes the PC's current output audio locally. It separates several frequency ranges and uses spectral changes to detect percussion instead of simply flashing from overall volume.
-Manual
-Open the Manual tab and select zones directly from the phone preview or the control list. A selected zone remains on until you select it again, press All Off, or change modes.
-Pattern editor
-Open the Pattern tab to build a sequence:
-Select one or more Glyph zones for the beat.
-Choose the ON duration.
-Choose how long GlyphLink should WAIT after that beat.
-Add the beat to the timeline.
-Repeat, rearrange or update beats as needed.
-Select Play Once or Loop.
-Record Taps turns each Glyph press into a beat using the current ON and WAIT values. Patterns autosave locally and can also be saved manually.
-Safe connection behavior
-Only one control mode runs at a time.
-Static Manual and Pattern frames refresh before the phone watchdog expires.
-The Android companion switches every Glyph off after approximately 900 ms without a valid frame.
-Closing a connection also clears the lights.
-An incompatible Android signing key is reported without uninstalling the existing app or deleting its data.
-Project structure
-```text
-GlyphLink/
-├── android/                 Android companion written in Kotlin
-├── installer/               Guided installer, validation and NSIS scripts
-├── pc/                      Windows desktop application and Glyph assets
-├── release/                 Release notes, hashes and validation report
-├── scripts/                 Android and installer build scripts
-├── tests/                   Installer, controller and interface tests
-├── BUILDING.md              Full developer build instructions
-├── LICENSE                  MIT license for GlyphLink source
-└── THIRD_PARTY_NOTICES.md   Notices for bundled dependencies
-```
-Build from source
-The source archive contains the editable desktop app, Android companion, installer, assets and tests. Compiled dependencies and private signing keys are deliberately excluded.
-See BUILDING.md for the complete Windows runtime, Android SDK, Kotlin, signing and NSIS build process.
-Run the automated tests with:
-```bash
-python -B -m unittest discover -s tests -v
-```
-Release validation
-GlyphLink Setup 1.3.6 was checked with:
-33 automated installer and controller tests covering bundle integrity, USB preparation, device states, disconnects, changed devices, retries and companion replies.
-Native Tk interface checks for phone gating, progress stages, retry behavior and minimum window sizing.
-Validation of all 3,343 bundled payload files after extracting the final installer.
-A byte-for-byte comparison between the installer scripts inside the EXE and the published source.
-The current EXE is not Authenticode-signed. Windows may show a SmartScreen warning for an unknown publisher.
-Troubleshooting
-<details>
-<summary><strong>The installer is waiting for a phone</strong></summary>
-Confirm that the cable supports data, the phone is unlocked and USB debugging is enabled. Disconnect and reconnect the cable, then accept the authorization prompt on the phone.
-</details>
-<details>
-<summary><strong>The phone appears as unauthorized</strong></summary>
-Unlock the phone and select Allow on the USB debugging prompt. If no prompt appears, revoke USB debugging authorizations in Developer options, reconnect the cable and authorize the computer again.
-</details>
-<details>
-<summary><strong>The required Glyph service was not found</strong></summary>
-This release requires the Evolution X `com.nothing.thirdparty` Glyph adapter. Check that the supported Evolution X build and its Glyph service are installed.
-</details>
-<details>
-<summary><strong>The Android update has an incompatible signature</strong></summary>
-The installed companion was signed with a different key. Setup leaves the existing app and its data untouched. Install an update signed with the same key as the existing companion, or manually back up anything important before replacing the app.
-</details>
-<details>
-<summary><strong>The app does not react to music</strong></summary>
-Open the Music tab, confirm that music processing is enabled and make sure Windows has an active default output device. Switching to Manual or Pattern pauses music frames automatically.
-</details>
-Privacy
-GlyphLink does not require an account or cloud backend. Audio analysis happens on the Windows PC, and lighting commands travel through a local ADB USB tunnel. Saved patterns remain in `%APPDATA%\GlyphLink`.
-Contributing
-Issues and pull requests are welcome. When reporting a bug, include:
-Windows version
-Phone ROM and Android version
-GlyphLink version
-The exact installer or app error
-Reproduction steps
-Do not upload private signing keys, local build folders or generated payloads to an issue or pull request.
-License and credits
-GlyphLink source is available under the MIT License. Bundled third-party software keeps its original license; see THIRD_PARTY_NOTICES.md.
-Created by Adam Ali.
-This is an independent open-source project and is not affiliated with or endorsed by Nothing Technology Limited, Evolution X, Google or Microsoft. Nothing, Nothing Phone and Glyph Interface are trademarks of their respective owners.
+Open **GlyphLinkSetup-1.3.6.exe**. The first screen explains Developer options, USB debugging and the phone authorization prompt. Setup checks the phone automatically and enables **Install GlyphLink** only after the checks pass. Click it and keep the Nothing Phone (1) connected and unlocked. Both apps and ADB are included; setup does not download or compile anything, or ask for APK/build locations.
+
+This companion preserves the existing project's Evolution X Glyph adapter integration. It requires the `com.nothing.thirdparty` adapter on the Nothing Phone (1), Android 12 or later, and 64-bit Windows 10/11. USB debugging must remain available for the desktop connection.
+
+Setup installs a complete desktop runtime in `%LOCALAPPDATA%\Programs\GlyphLink\versions`, installs the signed Android package, opens it, requires a PING/PONG response through ADB, launches the Windows app, and creates Desktop/Start-menu shortcuts and a Windows startup entry. Existing patterns remain in `%APPDATA%\GlyphLink`. No automatic app uninstall or signing-key override is performed.
+
+## New in setup 1.3.6
+
+The opening screen shows a live checklist for USB connection, debugging authorization, the supported phone and Android version, the required Glyph adapter, and three USB response checks. Android must finish booting before Install becomes available.
+
+Clicking Install triggers a fresh check of the same phone before copying the Windows app or installing the Android companion. Disconnecting or changing devices stops installation and returns to the checks. One worker owns checks and installation, so repeated clicks cannot start duplicate installs.
+
+The progress screen explains the current step, marks completed steps and shows what comes next. The main error message stays concise; View details contains the complete log and a Copy details button. Retry requires a ready phone. The content scrolls while the action buttons remain visible.
+
+Opening setup prepares verified USB tools in a support cache; neither app is installed at that point. The preinstallation checks confirm USB communication and required services, not physical LEDs. The companion connection is tested after installation.
+
+## Preserved fix from setup 1.3.5
+
+Opening setup 1.3.4 could create Python bytecode cache files inside the bundled runtime. Its strict file-list comparison then rejected its own runtime. This was reproduced with an actual Python import from the extracted 1.3.4 EXE.
+
+Both launchers now pass Python's `-B` option. The validator tolerates only Python cache files whose source belongs to the release, still requires every manifested file and its original hash, and lists missing or unexpected files in detailed errors. Generated caches are not copied to the installed app, and the packaging gate refuses a payload containing generated caches.
+
+The included Android companion remains version 1.3.4 (version code 134), with the identical APK bytes and signing key. This is an installer correction.
+
+## What was verified
+
+- The Android APK was compiled from the included Kotlin/AIDL source with Android SDK 35, JDK 17 and Kotlin 2.0.20. `apksigner verify` succeeded; application ID `com.adam.glyphlink`, version code 134, version 1.3.4, minimum API 31.
+- Thirty-three automated installer/controller tests passed. They cover payload integrity and generated caches, USB-only preparation, readiness states, disconnect/device substitution before copying apps, duplicate clicks, retry, Android failures and companion responses.
+- Native Linux Tk UI checks exercise Install readiness, disconnect, progress, concise errors, retry, completion and visible action buttons at the minimum window size, using simulated phone events. This is not a Windows execution test.
+- The included Windows Python and extensions are x64. The required non-system runtime DLLs are included.
+- The NSIS installer compiled successfully. Its extracted payload is compared with the release manifest before delivery.
+
+A real Windows installation, Android USB installation, Windows audio capture and physical Glyph LEDs could not be tested in this environment. The EXE is not Authenticode-signed.
+
+## Source and building
+
+The downloadable EXE is the finished installer. This source tree is for maintenance.
+
+`installer/setup.nsi` packages the UI, signed APK, ADB, and complete Windows runtime. `installer/launcher.nsi` builds the desktop launcher. Run `scripts/prepare_manifest.py` before compiling setup; it refuses a release missing any required payload file. Build with NSIS 3.09 or later from the installer directory.
+
+The desktop payload uses official CPython 3.12.10 x64 files extracted from Python.org's `core.msi`, `exe.msi`, `lib.msi` and `tcltk.msi`, plus Windows wheels listed in `release/dependencies.txt`. All dependencies must be included before release. Python is not installed globally on the user's PC.
+
+`scripts/build_android_offline.py` builds the APK using existing local SDK/JDK/compiler tools. Set `ANDROID_HOME`, `JAVA_HOME` and `KOTLIN_LIB_DIR`. This release used Android build-tools 35.0.0 and the Kotlin 2.0.20 compiler jars supplied with Gradle 8.11.1. Keep the original private signing files for future compatible Android updates; they are stored separately from the source/release.
+
+Tests: `python -m unittest discover -s tests -v`
+
+## References
+
+- Nothing USB debugging instructions: https://support.nothing.tech/hc/en-us/articles/16770211339281-How-do-I-enable-USB-debugging
+- Android ADB: https://developer.android.com/tools/adb
+- Android APK signing and verification: https://developer.android.com/tools/apksigner
+- Python no-bytecode option: https://docs.python.org/3.12/using/cmdline.html#cmdoption-B
+- NSIS script reference: https://nsis.sourceforge.io/Docs/Chapter4.html
+- CPython Windows distribution: https://www.python.org/ftp/python/3.12.10/amd64/
+
+
+## GitHub and licensing
+
+The source ZIP contains the editable Windows app, Android companion, installer, assets, tests and build instructions. Extract its GlyphLink-1.3.6 folder and upload the contents to your repository. Attach the EXE to a GitHub Release. Compiled binaries, downloaded runtime dependencies and private signing files are excluded from the source ZIP.
+
+GlyphLink source is released under the [MIT License](LICENSE). Third-party components retain their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Detailed build instructions are in [BUILDING.md](BUILDING.md).
