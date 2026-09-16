@@ -1,0 +1,15 @@
+cffi-2.1.1-cp312-cp312-win_amd64.whl
+customtkinter-5.2.2-py3-none-any.whl
+darkdetect-0.8.0-py3-none-any.whl
+numpy-2.2.6-cp312-cp312-win_amd64.whl
+packaging-26.3-py3-none-any.whl
+pillow-11.2.1-cp312-cp312-win_amd64.whl
+pycparser-3.0-py3-none-any.whl
+pystray-0.19.5-py2.py3-none-any.whl
+six-1.17.0-py2.py3-none-any.whl
+soundcard-0.4.4-py3-none-any.whl
+
+CPython 3.12.10 x64 (official Python.org MSI payloads)
+NSIS 3.09
+Android SDK platform 35 and build-tools 35.0.0
+Kotlin compiler and standard library 2.0.20

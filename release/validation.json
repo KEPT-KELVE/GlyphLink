@@ -1,0 +1,24 @@
+{
+  "installer_version": "1.3.6",
+  "companion_version": "1.3.4",
+  "exe_bytes": 28167643,
+  "exe_sha256": "87018c96c14266dff1404eff7e7955424ca2e5f989b1235df52e960eed19ea69",
+  "apk_sha256": "748965dea4d8549cc36d06d839c94d3c894ee02810e17ba6276e6273da690e92",
+  "payload_files": 3343,
+  "installer_controller_tests_passed": 33,
+  "extracted_installer_source_matches_archive": true,
+  "extracted_payload_validates_after_real_python_import": true,
+  "gui_checks": {
+    "version": "1.3.6",
+    "simulated_events": true,
+    "install_button_gated": true,
+    "disconnect_disables_install": true,
+    "retry_flow": true,
+    "progress_stages": true,
+    "footer_visible_at_minimum_size": true,
+    "callback_errors": [],
+    "windows_execution_tested": false
+  },
+  "windows_execution_tested": false,
+  "physical_phone_tested": false
+}
